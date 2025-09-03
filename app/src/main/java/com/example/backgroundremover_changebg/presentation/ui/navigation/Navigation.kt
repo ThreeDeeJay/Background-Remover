@@ -457,21 +457,26 @@ fun BottomNavigation(
                     }
                 }
             }, icon = {
-                if (current == it.route) {
-                    Icon(imageVector = it.selectedIcon, contentDescription = "", tint = Color.Blue)
-                } else {
-                    Icon(
-                        imageVector = it.unSelectedIcon,
-                        contentDescription = "",
-                    )
-                }
+                val selected = current == it.route
+                Icon(
+                    imageVector = if (selected) it.selectedIcon else it.unSelectedIcon,
+                    contentDescription = "",
+                    tint = if (selected) Color(0xFF3B82F6) else Color(0xFF64748B)
+                )
             }, label = {
-                if (current == it.route) {
-                    Text(text = it.title, color = Color.Blue, fontWeight = FontWeight.Medium)
-                } else {
-                    Text(text = it.title, fontWeight = FontWeight.Medium)
-                }
-            }, colors = NavigationBarItemDefaults.colors(indicatorColor = Color.Transparent))
+                val selected = current == it.route
+                Text(
+                    text = it.title,
+                    color = if (selected) Color(0xFF3B82F6) else Color(0xFF0F172A),
+                    fontWeight = FontWeight.Medium
+                )
+            }, colors = NavigationBarItemDefaults.colors(
+                indicatorColor = Color.Transparent,
+                selectedIconColor = Color(0xFF3B82F6),
+                unselectedIconColor = Color(0xFF64748B),
+                selectedTextColor = Color(0xFF3B82F6),
+                unselectedTextColor = Color(0xFF0F172A)
+            ))
         }
     }
 }

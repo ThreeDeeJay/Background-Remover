@@ -190,7 +190,7 @@ fun Tiktok_Add(navController: NavController) {
                 contentDescription = "Undo",
                 modifier = Modifier
                     .clickable {
-                        photoEditor?.redo()
+                        photoEditor?.undo()
                     }
             )
 
@@ -199,7 +199,7 @@ fun Tiktok_Add(navController: NavController) {
                 contentDescription = "Redo",
                 modifier = Modifier
                     .clickable {
-                        photoEditor?.undo()
+                        photoEditor?.redo()
                     }
             )
 
@@ -252,7 +252,8 @@ fun Tiktok_Add(navController: NavController) {
 
                         Slider(value = sliderPosition, onValueChange = { newPosition ->
                             sliderPosition = newPosition
-                            photoEditor?.setBrushEraserSize(newPosition)
+                            val mapped = (newPosition * 100f).coerceIn(1f, 100f)
+                            photoEditor?.setBrushEraserSize(mapped)
                         })
                     }
 
@@ -469,12 +470,13 @@ fun Tiktok_Add(navController: NavController) {
         ) {
             Box(
                 modifier = Modifier
-                    .padding(17.dp)
-                    .width(1200.dp)
-                    .height(618.dp)
+                    .fillMaxWidth()
+                    .padding(horizontal = 12.dp)
                     .border(BorderStroke(1.dp, Color.Gray), shape = RoundedCornerShape(12.dp))
                     .clip(RoundedCornerShape(12.dp))
-                    .background(Color.White),
+                    .background(Color.White)
+                    .height(0.dp)
+                    .weight(1f),
                 contentAlignment = Alignment.Center
             ) {
                 if (!isBlurred) {

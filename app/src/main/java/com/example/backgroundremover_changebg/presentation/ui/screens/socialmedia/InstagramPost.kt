@@ -191,7 +191,7 @@ fun InstagramPost(navController: NavController) {
                 contentDescription = "Undo",
                 modifier = Modifier
                     .clickable {
-                        photoEditor?.redo()
+                        photoEditor?.undo()
                     }
             )
 
@@ -200,7 +200,7 @@ fun InstagramPost(navController: NavController) {
                 contentDescription = "Redo",
                 modifier = Modifier
                     .clickable {
-                        photoEditor?.undo()
+                        photoEditor?.redo()
                     }
             )
 
@@ -254,7 +254,8 @@ fun InstagramPost(navController: NavController) {
 
                         Slider(value = sliderPosition, onValueChange = { newPosition ->
                             sliderPosition = newPosition
-                            photoEditor?.setBrushEraserSize(newPosition)
+                            val mapped = (newPosition * 100f).coerceIn(1f, 100f)
+                            photoEditor?.setBrushEraserSize(mapped)
                         })
                     }
 
@@ -471,12 +472,13 @@ fun InstagramPost(navController: NavController) {
         ) {
             Box(
                 modifier = Modifier
-                    .padding(17.dp)
-                    .width(1080.dp)
-                    .height(500.dp)
+                    .fillMaxWidth()
+                    .padding(horizontal = 12.dp)
                     .border(BorderStroke(1.dp, Color.Gray), shape = RoundedCornerShape(12.dp))
                     .clip(RoundedCornerShape(12.dp))
-                    .background(Color.White),
+                    .background(Color.White)
+                    .height(0.dp)
+                    .weight(1f),
                 contentAlignment = Alignment.Center
             ) {
                 if (!isBlurred) {
@@ -592,8 +594,8 @@ fun InstagramPost(navController: NavController) {
                 }
             }
 
-            if (selectedTool == Tool.Sticker) {
-                ModalBottomSheet(onDismissRequest = { stikerShowDialog }) {
+            if (selectedTool == Tool.Sticker && stikerShowDialog) {
+                ModalBottomSheet(onDismissRequest = { stikerShowDialog = false }) {
                     LazyVerticalGrid(
                         columns = GridCells.Fixed(4),
                         modifier = Modifier.fillMaxWidth(),

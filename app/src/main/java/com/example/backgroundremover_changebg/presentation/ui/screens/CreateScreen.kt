@@ -49,6 +49,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -636,23 +637,28 @@ fun CreateScreen(navController: NavController) {
 
 
     Scaffold(topBar = {
-        TopAppBar(title = { }, actions = {
-            Image(
-                painter = painterResource(id = R.drawable.questionmark),
-                contentDescription = "",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.size(26.dp)
-            )
-            Spacer(modifier = Modifier.width(14.dp))
-            Image(
-                painter = painterResource(id = R.drawable.getpro),
-                contentDescription = "",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .wrapContentWidth()
-                    .height(36.dp)
-            )
-        }, colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.White)
+        TopAppBar(
+            title = {
+                Text(
+                    text = "Create",
+                    color = Color.Black,
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.SemiBold
+                )
+            },
+            actions = {
+                Image(
+                    painter = painterResource(id = R.drawable.getpro),
+                    contentDescription = "Go Pro",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .wrapContentWidth()
+                        .height(32.dp)
+                        .clickable { pro = true }
+                )
+                Spacer(modifier = Modifier.width(12.dp))
+            },
+            colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.White)
         )
     }) { paddingValues ->
         LazyColumn(
@@ -672,13 +678,6 @@ fun CreateScreen(navController: NavController) {
                     horizontalAlignment = Alignment.Start,
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    Text(
-                        text = "Create",
-                        color = Color.Black,
-                        fontSize = 32.sp,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.align(Alignment.Start)
-                    )
 
                     Spacer(modifier = Modifier.height(10.dp))
 
@@ -688,13 +687,13 @@ fun CreateScreen(navController: NavController) {
                             searchText = newText
                         },
                         placeholder = {
-                            Text(text = "Search Photoroom Templates", color = Color.Gray)
+                            Text(text = "Search templates, tools and sizes", color = Color.Gray)
                         },
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(start = 16.dp, end = 16.dp)
-                            .height(54.dp),
-                        shape = RoundedCornerShape(11.dp),
+                            .height(56.dp),
+                        shape = RoundedCornerShape(14.dp),
                         leadingIcon = {
                             Icon(
                                 imageVector = Icons.Default.Search,
@@ -709,8 +708,8 @@ fun CreateScreen(navController: NavController) {
                         colors = TextFieldDefaults.colors(
                             focusedIndicatorColor = Color.Transparent,
                             unfocusedIndicatorColor = Color.Transparent,
-                            focusedContainerColor = Color.LightGray.copy(alpha = 0.40f),
-                            unfocusedContainerColor = Color.LightGray.copy(alpha = 0.40f),
+                            focusedContainerColor = Color(0xFFF3F4F6),
+                            unfocusedContainerColor = Color(0xFFF5F6F8),
                         )
                     )
                     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
@@ -773,8 +772,8 @@ fun CreateScreen(navController: NavController) {
                         }) { option ->
                             Column {
                                 Box(modifier = Modifier
-                                    .clip(RoundedCornerShape(10.dp))
-                                    .width(78.dp)
+                                    .clip(RoundedCornerShape(16.dp))
+                                    .width(90.dp)
                                     .clickable {
                                         when (option.name) {
                                             "Remove Bg" -> galleryLauncher.launch("image/*")
@@ -784,30 +783,32 @@ fun CreateScreen(navController: NavController) {
                                             }
                                         }
                                     }
-                                    .height(70.dp)
-                                    .background(Color(0XFF9eaaf7).copy(alpha = 0.20f)),
+                                    .height(84.dp)
+                                    .background(Color.White)
+                                    .border(1.dp, Color(0xFFE6E8EC), RoundedCornerShape(16.dp))
+                                    .padding(10.dp)
+                                    .shadow(elevation = 2.dp, shape = RoundedCornerShape(16.dp), ambientColor = Color(0x11000000), spotColor = Color(0x22000000)),
                                     contentAlignment = Alignment.Center) {
                                     Image(
                                         painter = painterResource(id = option.icon),
                                         contentDescription = option.name,
                                         contentScale = ContentScale.Crop,
-                                        modifier = Modifier.size(40.dp)
+                                        modifier = Modifier.size(44.dp)
                                     )
 
                                     if (option.name == "Retouch" || option.name == "Ai Bg" || option.name == "Ai Shadows") {
                                         Box(
                                             modifier = Modifier
                                                 .align(Alignment.TopEnd)
-                                                .background(
-                                                    Color.Red, shape = RoundedCornerShape(4.dp)
-                                                )
-                                                .padding(horizontal = 4.dp, vertical = 2.dp)
+                                                .clip(RoundedCornerShape(6.dp))
+                                                .background(Color(0xFFEF4444))
+                                                .padding(horizontal = 6.dp, vertical = 2.dp)
                                         ) {
                                             Text(
                                                 text = "Pro",
                                                 color = Color.White,
                                                 fontSize = 10.sp,
-                                                fontWeight = FontWeight.Bold
+                                                fontWeight = FontWeight.SemiBold
                                             )
                                         }
                                     }
@@ -816,8 +817,8 @@ fun CreateScreen(navController: NavController) {
                                 Spacer(modifier = Modifier.height(7.dp))
                                 Text(
                                     text = option.name,
-                                    fontSize = 13.sp,
-                                    fontWeight = FontWeight.Medium,
+                                    fontSize = 12.sp,
+                                    fontWeight = FontWeight.SemiBold,
                                     color = Color.Black,
                                     modifier = Modifier.align(Alignment.CenterHorizontally)
                                 )
@@ -842,14 +843,12 @@ fun CreateScreen(navController: NavController) {
                             ) {
                                 Box(
                                     modifier = Modifier
-                                        .border(
-                                            BorderStroke(1.dp, Color.Gray),
-                                            shape = RoundedCornerShape(10.dp)
-                                        )
-                                        .width(78.dp)
-                                        .height(70.dp)
-                                        .clip(RoundedCornerShape(10.dp))
-                                        .background(Color(0XFF9eaaf7).copy(alpha = 0.20f))
+                                        .clip(RoundedCornerShape(16.dp))
+                                        .border(BorderStroke(1.dp, Color(0xFFE6E8EC)), RoundedCornerShape(16.dp))
+                                        .width(90.dp)
+                                        .height(84.dp)
+                                        .background(Color.White)
+                                        .shadow(elevation = 2.dp, shape = RoundedCornerShape(16.dp), ambientColor = Color(0x11000000), spotColor = Color(0x22000000))
                                         .clickable {
                                             when (option.name) {
                                                 "White" -> whiteColorsLauncher.launch("image/*")
@@ -872,8 +871,8 @@ fun CreateScreen(navController: NavController) {
 
                                 Text(
                                     text = option.name,
-                                    fontSize = 13.sp,
-                                    fontWeight = FontWeight.Medium,
+                                    fontSize = 12.sp,
+                                    fontWeight = FontWeight.SemiBold,
                                     color = Color.Black,
                                     modifier = Modifier.align(Alignment.CenterHorizontally)
                                 )
@@ -882,10 +881,10 @@ fun CreateScreen(navController: NavController) {
                     }
 
                     Text(
-                        text = "Photo Editing Classic  >",
+                        text = "Photo editing classic",
                         color = Color.Black,
-                        fontSize = 22.sp,
-                        fontWeight = FontWeight.Medium,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.SemiBold,
                         modifier = Modifier
                             .align(Alignment.Start)
                             .padding(start = 10.dp)
@@ -916,14 +915,12 @@ fun CreateScreen(navController: NavController) {
                             ) {
                                 Box(
                                     modifier = Modifier
-                                        .border(
-                                            BorderStroke(1.dp, Color.Gray),
-                                            shape = RoundedCornerShape(10.dp)
-                                        )
-                                        .width(80.dp)
-                                        .height(80.dp)
-                                        .clip(RoundedCornerShape(10.dp))
-                                        .background(Color(0XFF9eaaf7).copy(alpha = 0.20f))
+                                        .clip(RoundedCornerShape(16.dp))
+                                        .border(BorderStroke(1.dp, Color(0xFFE6E8EC)), RoundedCornerShape(16.dp))
+                                        .width(90.dp)
+                                        .height(90.dp)
+                                        .background(Color.White)
+                                        .shadow(elevation = 2.dp, shape = RoundedCornerShape(16.dp), ambientColor = Color(0x11000000), spotColor = Color(0x22000000))
                                         .clickable {
                                             when (option.name) {
                                                 "Blur" -> BlurLauncher.launch("image/*")
@@ -959,10 +956,10 @@ fun CreateScreen(navController: NavController) {
 
 
                     Text(
-                        text = "Profile Pics  >",
+                        text = "Profile pics",
                         color = Color.Black,
-                        fontSize = 22.sp,
-                        fontWeight = FontWeight.Medium,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.SemiBold,
                         modifier = Modifier
                             .align(Alignment.Start)
                             .padding(start = 10.dp)
@@ -984,14 +981,12 @@ fun CreateScreen(navController: NavController) {
                             ) {
                                 Box(
                                     modifier = Modifier
-                                        .border(
-                                            BorderStroke(1.dp, Color.Gray),
-                                            shape = RoundedCornerShape(10.dp)
-                                        )
-                                        .width(80.dp)
-                                        .height(80.dp)
-                                        .clip(RoundedCornerShape(10.dp))
-                                        .background(Color(0XFF9eaaf7).copy(alpha = 0.20f))
+                                        .clip(RoundedCornerShape(16.dp))
+                                        .border(BorderStroke(1.dp, Color(0xFFE6E8EC)), RoundedCornerShape(16.dp))
+                                        .width(90.dp)
+                                        .height(90.dp)
+                                        .background(Color.White)
+                                        .shadow(elevation = 2.dp, shape = RoundedCornerShape(16.dp), ambientColor = Color(0x11000000), spotColor = Color(0x22000000))
                                         .clickable {
                                             when (option.icon) {
                                                 R.drawable.pic1 -> pic1Launcher.launch("image/*")
@@ -1017,10 +1012,10 @@ fun CreateScreen(navController: NavController) {
 
 
                     Text(
-                        text = "Social Media >",
+                        text = "Social media",
                         color = Color.Black,
-                        fontSize = 22.sp,
-                        fontWeight = FontWeight.Medium,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.SemiBold,
                         modifier = Modifier
                             .align(Alignment.Start)
                             .padding(start = 10.dp)
@@ -1043,15 +1038,13 @@ fun CreateScreen(navController: NavController) {
                             ) {
                                 Box(
                                     modifier = Modifier
-                                        .width(80.dp)
+                                        .width(90.dp)
                                         .clickable {
                                             navController.navigate(Screens.InstagramStory.route)
                                         }
-                                        .height(140.dp)
-                                        .border(
-                                            BorderStroke(1.dp, color = Color.Gray),
-                                            shape = RoundedCornerShape(12.dp)
-                                        ),
+                                        .height(160.dp)
+                                        .clip(RoundedCornerShape(16.dp))
+                                        .border(BorderStroke(1.dp, Color(0xFFE6E8EC)), RoundedCornerShape(16.dp)),
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Image(
@@ -1076,12 +1069,10 @@ fun CreateScreen(navController: NavController) {
                             ) {
                                 Box(
                                     modifier = Modifier
-                                        .size(100.dp)
+                                        .size(110.dp)
                                         .clickable { navController.navigate(Screens.InstagramPost.route) }
-                                        .border(
-                                            BorderStroke(1.dp, color = Color.Gray),
-                                            shape = RoundedCornerShape(12.dp)
-                                        ),
+                                        .clip(RoundedCornerShape(16.dp))
+                                        .border(BorderStroke(1.dp, Color(0xFFE6E8EC)), RoundedCornerShape(16.dp)),
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Image(
@@ -1106,15 +1097,13 @@ fun CreateScreen(navController: NavController) {
                             ) {
                                 Box(
                                     modifier = Modifier
-                                        .width(80.dp)
+                                        .width(90.dp)
                                         .clickable {
                                             navController.navigate(Screens.InstagramReel.route)
                                         }
-                                        .height(120.dp)
-                                        .border(
-                                            BorderStroke(1.dp, color = Color.Gray),
-                                            shape = RoundedCornerShape(12.dp)
-                                        ),
+                                        .height(140.dp)
+                                        .clip(RoundedCornerShape(16.dp))
+                                        .border(BorderStroke(1.dp, Color(0xFFE6E8EC)), RoundedCornerShape(16.dp)),
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Image(
@@ -1139,13 +1128,11 @@ fun CreateScreen(navController: NavController) {
                             ) {
                                 Box(
                                     modifier = Modifier
-                                        .width(100.dp)
-                                        .height(100.dp)
+                                        .width(110.dp)
+                                        .height(110.dp)
                                         .clickable { navController.navigate(Screens.FacebookPost.route) }
-                                        .border(
-                                            BorderStroke(1.dp, color = Color.Gray),
-                                            shape = RoundedCornerShape(12.dp)
-                                        ),
+                                        .clip(RoundedCornerShape(16.dp))
+                                        .border(BorderStroke(1.dp, Color(0xFFE6E8EC)), RoundedCornerShape(16.dp)),
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Image(
@@ -1170,15 +1157,13 @@ fun CreateScreen(navController: NavController) {
                             ) {
                                 Box(
                                     modifier = Modifier
-                                        .width(80.dp)
+                                        .width(90.dp)
                                         .clickable {
                                             navController.navigate(Screens.TiktokVideo.route)
                                         }
-                                        .height(140.dp)
-                                        .border(
-                                            BorderStroke(1.dp, color = Color.Gray),
-                                            shape = RoundedCornerShape(12.dp)
-                                        ),
+                                        .height(160.dp)
+                                        .clip(RoundedCornerShape(16.dp))
+                                        .border(BorderStroke(1.dp, Color(0xFFE6E8EC)), RoundedCornerShape(16.dp)),
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Image(
@@ -1203,15 +1188,13 @@ fun CreateScreen(navController: NavController) {
                             ) {
                                 Box(
                                     modifier = Modifier
-                                        .width(80.dp)
+                                        .width(90.dp)
                                         .clickable {
                                             navController.navigate(Screens.FacebookStory.route)
                                         }
-                                        .height(160.dp)
-                                        .border(
-                                            BorderStroke(1.dp, color = Color.Gray),
-                                            shape = RoundedCornerShape(12.dp)
-                                        ),
+                                        .height(180.dp)
+                                        .clip(RoundedCornerShape(16.dp))
+                                        .border(BorderStroke(1.dp, Color(0xFFE6E8EC)), RoundedCornerShape(16.dp)),
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Image(
@@ -1236,15 +1219,13 @@ fun CreateScreen(navController: NavController) {
                             ) {
                                 Box(
                                     modifier = Modifier
-                                        .width(100.dp)
+                                        .width(110.dp)
                                         .clickable {
                                             navController.navigate(Screens.TiktokAdd.route)
                                         }
-                                        .height(160.dp)
-                                        .border(
-                                            BorderStroke(1.dp, color = Color.Gray),
-                                            shape = RoundedCornerShape(12.dp)
-                                        ),
+                                        .height(180.dp)
+                                        .clip(RoundedCornerShape(16.dp))
+                                        .border(BorderStroke(1.dp, Color(0xFFE6E8EC)), RoundedCornerShape(16.dp)),
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Image(
